@@ -180,7 +180,6 @@ All error responses follow the format:
 
 ---
 
-**Maintainer:** Michael Akinwonmi  
-**Repository:** `interest-calculator-api`
+**Maintainer:** Michael Akinwonmi
 
 
