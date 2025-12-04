@@ -38,7 +38,7 @@ Built with Node.js + Express for fast and modular financial computations.
 
 # Run the Server
 
-npm start
+```npm start```
 
 The API will start on:
 
