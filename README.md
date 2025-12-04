@@ -22,15 +22,15 @@ Built with Node.js + Express for fast and modular financial computations.
 
 # Installation
 
-Clone the repository
+<u>Clone the repository</u>
 
 git clone https://github.com/degenmyke/InterestCalculatorAPI.git
 
-Navigate into the project
+<u>Navigate into the project</u>
 
 cd InterestCalculatorAPI
 
-Install dependencies
+<u>Install dependencies</u>
 
 npm install
 
