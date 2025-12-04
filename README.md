@@ -1,11 +1,11 @@
-InterestCalculatorAPI
+# InterestCalculatorAPI
 
 A lightweight and developer-friendly REST API for performing financial calculations, including simple interest, compound interest, and currency conversion.
 Built with Node.js + Express for fast and modular financial computations.
 
 ⸻
 
-Features
+# Features
 	•	Calculate Simple Interest
 	•	Calculate Compound Interest
 	•	Convert currencies (supports multiple base and target currencies)
@@ -14,27 +14,30 @@ Features
 
 ⸻
 
-Tech Stack
+# Tech Stack
 	•	Node.js
 	•	Express.js
 
 ⸻
 
-Installation
+# Installation
 
-# Clone the repository
+Clone the repository
+
 git clone https://github.com/degenmyke/InterestCalculatorAPI.git
 
-# Navigate into the project
+Navigate into the project
+
 cd InterestCalculatorAPI
 
-# Install dependencies
+Install dependencies
+
 npm install
 
 
 ⸻
 
-Run the Server
+# Run the Server
 
 npm start
 
@@ -44,7 +47,7 @@ http://localhost:3000
 
 ⸻
 
-Project Structure
+# Project Structure
 
 InterestCalculatorAPI/
 │── routes/
@@ -62,7 +65,7 @@ InterestCalculatorAPI/
 
 ⸻
 
-Testing the API
+# Testing the API
 
 You can test endpoints using:
 	•	Postman
@@ -77,7 +80,7 @@ curl "http://localhost:3000/simple-interest?principal=5000&rate=7&time=3"
 
 ⸻
 
- Contributing
+# Contributing
 
 Pull requests are welcome!
 If you want to add new endpoints or improve financial calculations, feel free to open an issue.
@@ -89,9 +92,3 @@ License
 This project is licensed under the MIT License.
 
 ⸻
-
-If you want, I can also generate:
-✅ Expanded documentation for the /docs folder
-✅ OpenAPI (Swagger) docs
-✅ A Postman collection
-Just tell me!
