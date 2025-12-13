@@ -1,8 +1,9 @@
 import { Router } from "express";
+import { authMiddleware } from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/api/exchange-rate", async (req, res) => {
+router.get("/api/exchange-rate", authMiddleware, async (req, res) => {
   try {
     const { from = "USD", to = "EUR", amount = "1" } = req.query;
 

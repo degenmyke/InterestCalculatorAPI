@@ -1,9 +1,11 @@
 import { Router } from "express";
+import { createLog } from "../services/store.js";
+import { authMiddleware } from "../middleware/auth.js";
 
 const router = Router();
 
 // Simple Interest
-router.post("/api/simple-interest", (req, res) => {
+router.post("/api/simple-interest", authMiddleware, (req, res) => {
   const { principal, rate, time } = req.body;
 
   const principalNum = Number(principal);
@@ -23,6 +25,13 @@ router.post("/api/simple-interest", (req, res) => {
   const interest = (principalNum * rateNum * timeNum) / 100;
   const totalAmount = principalNum + interest;
 
+  createLog({
+    userId: req.user.id,
+    type: "simple",
+    input: { principal: principalNum, rate: rateNum, time: timeNum },
+    result: { interest, totalAmount },
+  });
+
   res.json({
     principal: principalNum,
     rate: rateNum,
@@ -33,7 +42,7 @@ router.post("/api/simple-interest", (req, res) => {
 });
 
 // Compound Interest
-router.post("/api/compound-interest", (req, res) => {
+router.post("/api/compound-interest", authMiddleware, (req, res) => {
   const { principal, rate, time, frequency } = req.body;
 
   const principalNum = Number(principal);
@@ -56,6 +65,13 @@ router.post("/api/compound-interest", (req, res) => {
   const amount =
     principalNum * Math.pow(1 + rateDecimal / frequencyNum, frequencyNum * timeNum);
   const interest = amount - principalNum;
+
+  createLog({
+    userId: req.user.id,
+    type: "compound",
+    input: { principal: principalNum, rate: rateNum, time: timeNum, frequency: frequencyNum },
+    result: { interest: Number(interest.toFixed(2)), totalAmount: Number(amount.toFixed(2)) },
+  });
 
   res.json({
     principal: principalNum,
