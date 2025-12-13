@@ -180,11 +180,7 @@ All error responses follow the format:
 
 ---
 
-<<<<<<< HEAD:docs/getting-started.md
-**Maintainer:** Michael Akinwonmi
-=======
 **Maintainer:** Michael Akinwonmi  
 
->>>>>>> cb74d8f (Add user authentication middleware):docs/api-documentation.md
 
 
