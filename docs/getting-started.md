@@ -20,7 +20,7 @@ The API accepts JSON or URL-encoded payloads and responds in JSON. It is typical
    ```
 2. **Start the API server**
    ```bash
-   npm run start:api   # or: API_PORT=4000 node index.js
+   npm run start:api   # or: API_PORT=3000 node index.js
    ```
 
 ---
@@ -180,6 +180,11 @@ All error responses follow the format:
 
 ---
 
+<<<<<<< HEAD:docs/getting-started.md
 **Maintainer:** Michael Akinwonmi
+=======
+**Maintainer:** Michael Akinwonmi  
+
+>>>>>>> cb74d8f (Add user authentication middleware):docs/api-documentation.md
 
 
