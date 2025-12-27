@@ -9,13 +9,13 @@ function signToken(user) {
   });
 }
 
-function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Bearer ") ? header.slice(7) : null;
   if (!token) return res.status(401).json({ error: "Missing token" });
   try {
     const payload = jwt.verify(token, SECRET);
-    const user = getUserById(payload.sub);
+    const user = await getUserById(payload.sub);
     if (!user) return res.status(401).json({ error: "Invalid token" });
     req.user = user;
     return next();

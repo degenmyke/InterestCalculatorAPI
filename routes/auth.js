@@ -12,7 +12,7 @@ router.post("/api/register", async (req, res) => {
   }
   try {
     const hash = await bcrypt.hash(password, 10);
-    const user = createUser(email, hash);
+    const user = await createUser(email, hash);
     const token = signToken(user);
     return res.json({ token, user: { id: user.id, email: user.email } });
   } catch (err) {
@@ -22,10 +22,10 @@ router.post("/api/register", async (req, res) => {
 
 router.post("/api/login", async (req, res) => {
   const { email, password } = req.body || {};
-  const user = findUserByEmail(email);
+  const user = await findUserByEmail(email);
   if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
-  const ok = await bcrypt.compare(password, user.passwordHash);
+  const ok = await bcrypt.compare(password, user.password_hash);
   if (!ok) return res.status(401).json({ error: "Invalid credentials" });
 
   const token = signToken(user);

@@ -5,7 +5,7 @@ import { authMiddleware } from "../middleware/auth.js";
 const router = Router();
 
 // Simple Interest
-router.post("/api/simple-interest", authMiddleware, (req, res) => {
+router.post("/api/simple-interest", authMiddleware, async (req, res) => {
   const { principal, rate, time } = req.body;
 
   const principalNum = Number(principal);
@@ -25,7 +25,7 @@ router.post("/api/simple-interest", authMiddleware, (req, res) => {
   const interest = (principalNum * rateNum * timeNum) / 100;
   const totalAmount = principalNum + interest;
 
-  createLog({
+  await createLog({
     userId: req.user.id,
     type: "simple",
     input: { principal: principalNum, rate: rateNum, time: timeNum },
@@ -42,7 +42,7 @@ router.post("/api/simple-interest", authMiddleware, (req, res) => {
 });
 
 // Compound Interest
-router.post("/api/compound-interest", authMiddleware, (req, res) => {
+router.post("/api/compound-interest", authMiddleware, async (req, res) => {
   const { principal, rate, time, frequency } = req.body;
 
   const principalNum = Number(principal);
@@ -66,7 +66,7 @@ router.post("/api/compound-interest", authMiddleware, (req, res) => {
     principalNum * Math.pow(1 + rateDecimal / frequencyNum, frequencyNum * timeNum);
   const interest = amount - principalNum;
 
-  createLog({
+  await createLog({
     userId: req.user.id,
     type: "compound",
     input: { principal: principalNum, rate: rateNum, time: timeNum, frequency: frequencyNum },

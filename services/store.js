@@ -1,60 +1,94 @@
-// Lightweight in-memory store to keep the project simple.
-// Swap this file with a database-backed implementation later if needed.
+import { query } from "./db.js";
 
-let nextUserId = 1;
-let nextLogId = 1;
-
-const users = [];
-const logs = [];
-
-function createUser(email, passwordHash) {
-  const existing = users.find((u) => u.email === email);
-  if (existing) {
-    throw new Error("User already exists");
-  }
-  const user = { id: nextUserId++, email, passwordHash };
-  users.push(user);
-  return user;
+async function createUser(email, passwordHash) {
+  const { rows } = await query(
+    `INSERT INTO users (email, password_hash)
+     VALUES ($1, $2)
+     ON CONFLICT (email) DO NOTHING
+     RETURNING id, email`,
+    [email, passwordHash]
+  );
+  if (!rows.length) throw new Error("User already exists");
+  return rows[0];
 }
 
-function findUserByEmail(email) {
-  return users.find((u) => u.email === email);
+async function findUserByEmail(email) {
+  const { rows } = await query(
+    `SELECT id, email, password_hash
+     FROM users
+     WHERE email = $1`,
+    [email]
+  );
+  return rows[0] || null;
 }
 
-function getUserById(id) {
-  return users.find((u) => u.id === id);
+async function getUserById(id) {
+  const { rows } = await query(
+    `SELECT id, email
+     FROM users
+     WHERE id = $1`,
+    [id]
+  );
+  return rows[0] || null;
 }
 
-function createLog({ userId = null, type, input, result }) {
-  const log = {
-    id: nextLogId++,
-    userId,
-    type,
-    input,
-    result,
-    createdAt: new Date().toISOString(),
-  };
-  logs.push(log);
-  return log;
+async function createLog({ userId, type, input, result }) {
+  const { rows } = await query(
+    `INSERT INTO logs (user_id, type, input, result)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id,
+               user_id AS "userId",
+               type,
+               input,
+               result,
+               created_at AS "createdAt"`,
+    [userId, type, input, result]
+  );
+  return rows[0];
 }
 
-function listLogs(userId) {
-  if (!userId) return logs;
-  return logs.filter((l) => l.userId === userId);
+async function listLogs(userId) {
+  const { rows } = await query(
+    `SELECT id,
+            user_id AS "userId",
+            type,
+            input,
+            result,
+            created_at AS "createdAt"
+     FROM logs
+     WHERE user_id = $1
+     ORDER BY created_at DESC`,
+    [userId]
+  );
+  return rows;
 }
 
-function updateLog(id, userId, data) {
-  const log = logs.find((l) => l.id === id && (!userId || l.userId === userId));
-  if (!log) return null;
-  Object.assign(log, data);
-  return log;
+async function updateLog(id, userId, data) {
+  const { type, input, result } = data;
+  const { rows } = await query(
+    `UPDATE logs
+     SET type = COALESCE($3, type),
+         input = COALESCE($4, input),
+         result = COALESCE($5, result)
+     WHERE id = $1 AND user_id = $2
+     RETURNING id,
+               user_id AS "userId",
+               type,
+               input,
+               result,
+               created_at AS "createdAt"`,
+    [id, userId, type, input, result]
+  );
+  return rows[0] || null;
 }
 
-function deleteLog(id, userId) {
-  const idx = logs.findIndex((l) => l.id === id && (!userId || l.userId === userId));
-  if (idx === -1) return false;
-  logs.splice(idx, 1);
-  return true;
+async function deleteLog(id, userId) {
+  const { rowCount } = await query(
+    `DELETE FROM logs
+     WHERE id = $1 AND user_id = $2`,
+    [id, userId]
+  );
+  return rowCount > 0;
 }
 
 export {
