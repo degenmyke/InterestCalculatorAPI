@@ -7,7 +7,7 @@ const client = new Client({
   host: process.env.DB_HOST || "localhost",
   port: process.env.DB_PORT || 5432,
   user: process.env.DB_USER || "postgres",
-  password: process.env.DB_PASSWORD || "babanla1",
+  password: process.env.DB_PASSWORD || "yourPassword",
   database: process.env.DB_NAME || "interestAPI",
 });
 
@@ -23,7 +23,7 @@ async function query(text, params) {
 
 async function testConnection() {
   await query("SELECT NOW()");
-  console.log("✓ Database connection successful");
+  console.log("Database connection successful");
   return true;
 }
 
